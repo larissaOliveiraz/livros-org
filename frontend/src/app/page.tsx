@@ -16,13 +16,13 @@ export default function Home() {
           <p className="pt-1 font-semibold">LivrosOrg</p>
         </div>
 
-        {/* MIDDLE MENU */}
+        {/* MENU */}
         <div className="flex gap-2">
           <div
             onClick={() => setSelection("ALL")}
             className={`${
               selection === "ALL" && "bg-purple-900 text-white"
-            } bg-gray-100 p-2 px-4 rounded-full text-purple-900 hover:bg-gray-200 cursor-pointer`}
+            } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer`}
           >
             Todos
           </div>
@@ -30,7 +30,7 @@ export default function Home() {
             onClick={() => setSelection("WANT")}
             className={`${
               selection === "WANT" && "bg-purple-900 text-white"
-            } bg-gray-100 p-2 px-4 rounded-full text-purple-900 hover:bg-gray-200 cursor-pointer`}
+            } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer`}
           >
             Quero Ler
           </div>
@@ -38,7 +38,7 @@ export default function Home() {
             onClick={() => setSelection("READING")}
             className={`${
               selection === "READING" && "bg-purple-900 text-white"
-            } bg-gray-100 p-2 px-4 rounded-full text-purple-900 hover:bg-gray-200 cursor-pointer`}
+            } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer`}
           >
             Lendo
           </div>
@@ -46,18 +46,15 @@ export default function Home() {
             onClick={() => setSelection("READ")}
             className={`${
               selection === "READ" && "bg-purple-900 text-white"
-            } bg-gray-100 p-2 px-4 rounded-full text-purple-900 hover:bg-gray-200 cursor-pointer`}
+            } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer`}
           >
             Já Li
           </div>
-        </div>
-
-        {/* LEFT MENU */}
-        <div className="flex gap-3">
-          <div className="bg-gray-100 p-2 rounded-full text-purple-900 hover:bg-gray-200 cursor-pointer">
-            <Search size={24} />
+          <div className="flex gap-2 bg-gray-100 p-2 rounded-full text-purple-900">
+            <input type="text" className="bg-gray-100 outline-none px-2" />
+            <Search size={24} className="cursor-pointer" />
           </div>
-          <div className="bg-gray-100 p-2 rounded-full text-purple-900 hover:bg-gray-200 cursor-pointer">
+          <div className="bg-gray-100 p-2 flex rounded-full text-purple-900 hover:bg-gray-200 cursor-pointer">
             <Plus size={24} />
           </div>
         </div>
