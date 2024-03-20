@@ -43,7 +43,7 @@ export const AddBookPopup = ({ onClose }: AddBookPopupProps) => {
       readingYear,
       score,
       user: {
-        id: 2,
+        id: 1,
       },
     });
 
@@ -131,11 +131,11 @@ export const AddBookPopup = ({ onClose }: AddBookPopupProps) => {
           {status === "READ" && (
             <div className="flex gap-5">
               <label className="w-full">
-                Mês (opcional){" "}
+                Mês
                 <GenericInput value={readingMonth} setValue={setReadingMonth} />
               </label>
               <label className="w-full">
-                Ano{" "}
+                Ano
                 <GenericInput value={readingYear} setValue={setReadingYear} />
               </label>
               <label>

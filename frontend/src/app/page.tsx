@@ -1,4 +1,5 @@
 "use client";
+import { AddBookPopup } from "@/components/AddBookPopup";
 import { Header } from "@/components/Header";
 import { axiosApi } from "@/lib/axios";
 import { Book } from "@/types/Book";
@@ -7,15 +8,25 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [books, setBooks] = useState<Book[]>([]);
+  const [bookDetails, setBookDetails] = useState<Book>();
+  const [opened, setOpened] = useState(false);
 
   async function getAllBooks() {
-    const { data } = await axiosApi.get("/books/1");
+    const { data } = await axiosApi.get("/books/user/1");
     setBooks(data);
   }
 
   async function getBooksByStatus(status: string) {
-    const { data } = await axiosApi.get(`/books/1/${status.toLowerCase()}`);
+    const { data } = await axiosApi.get(
+      `/books/user/1/${status.toLowerCase()}`
+    );
     setBooks(data);
+  }
+
+  async function getBookDetails(bookId: number) {
+    const { data } = await axiosApi.get(`/books/user/1/book/${bookId}`);
+    setBookDetails(data);
+    console.log(data);
   }
 
   useEffect(() => {
@@ -25,11 +36,17 @@ export default function Home() {
   return (
     <>
       <div className="p-4 w-[60%] h-[60%] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-md">
-        <Header all={getAllBooks} byStatus={getBooksByStatus} />
+        <Header
+          all={getAllBooks}
+          byStatus={getBooksByStatus}
+          onOpen={() => setOpened(true)}
+        />
         <main className="mt-3">
           <div className="flex items-center justify-between">
-            <p>0 livros</p>
-            <div className="flex gap-2 bg-gray-100 p-2 rounded-full text-purple-900">
+            <p className="flex-1">
+              {books.length} {books.length > 1 ? "livros" : "livro"}
+            </p>
+            <div className="flex flex-1 gap-2 bg-gray-100 p-2 rounded-full text-purple-900">
               <input
                 type="text"
                 className="bg-gray-100 outline-none px-2 w-full"
@@ -37,9 +54,35 @@ export default function Home() {
               <Search size={24} className="cursor-pointer" />
             </div>
           </div>
-          {books && books.map((book) => <p>{book.title}</p>)}
+
+          <div className="grid grid-cols-3 gap-3 mt-3">
+            {books &&
+              books.map((book) => (
+                <div
+                  onClick={() => getBookDetails(book.id as number)}
+                  className={`flex items-center gap-3 p-3 rounded-lg ${
+                    book.status === "WANT" && "bg-blue-100"
+                  } ${book.status === "READING" && "bg-yellow-100"} ${
+                    book.status === "READ" && "bg-green-100"
+                  } `}
+                >
+                  <div
+                    className={`${book.status === "WANT" && "bg-blue-700"} ${
+                      book.status === "READING" && "bg-yellow-500"
+                    } ${
+                      book.status === "READ" && "bg-green-600"
+                    } w-4 h-4 rounded-full`}
+                  ></div>
+                  <div>
+                    <p className="text-lg font-semibold -mb-1">{book.title}</p>
+                    <p>{book.author}</p>
+                  </div>
+                </div>
+              ))}
+          </div>
         </main>
       </div>
+      {opened && <AddBookPopup onClose={() => setOpened(false)} />}
     </>
   );
 }

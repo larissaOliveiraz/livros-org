@@ -22,14 +22,23 @@ public class BookController {
     private BookRepository repository;
     private BookMapper mapper;
 
-    @GetMapping("/{userId}")
-    public List<BookDTO> findAllByUser(@PathVariable Long userId) {
+    @GetMapping("/user/{userId}/book/{bookId}")
+    public BookDTO getBookById(@PathVariable Long userId, @PathVariable Long bookId) {
         List<Book> books = repository.findAllByUserId(userId);
-        return mapper.toCollectionDTO(books);
+        Book selectedBook = books.stream()
+                .filter(book -> Objects.equals(book.getId(), bookId))
+                .findFirst()
+                .orElse(null);
+        return selectedBook != null ? mapper.toDTO(selectedBook) : null;
     }
 
-    @GetMapping("/{userId}/{status}")
-    public List<BookDTO> findAllByStatus(@PathVariable Long userId,@PathVariable String status) {
+    @GetMapping("/user/{userId}")
+    public List<Book> findAllByUser(@PathVariable Long userId) {
+        return repository.findAllByUserId(userId);
+    }
+
+    @GetMapping("/user/{userId}/{status}")
+    public List<Book> findAllByStatus(@PathVariable Long userId, @PathVariable String status) {
         List<Book> books = repository.findAllByUserId(userId);
         List<Book> booksByStatus = new ArrayList<>();
         for (Book book : books) {
@@ -37,7 +46,7 @@ public class BookController {
                 booksByStatus.add(book);
             }
         }
-        return mapper.toCollectionDTO(booksByStatus);
+        return booksByStatus;
     }
 
     @PostMapping

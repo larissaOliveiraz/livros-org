@@ -7,13 +7,13 @@ import { Book } from "@/types/Book";
 interface HeaderProps {
   all: () => void;
   byStatus: (status: string) => void;
+  onOpen: () => void;
 }
 
-export const Header = ({ all, byStatus }: HeaderProps) => {
+export const Header = ({ all, byStatus, onOpen }: HeaderProps) => {
   const [selection, setSelection] = useState<
     "ALL" | "WANT" | "READING" | "READ"
   >("ALL");
-  const [opened, setOpened] = useState(false);
 
   function getAll() {
     all();
@@ -69,12 +69,11 @@ export const Header = ({ all, byStatus }: HeaderProps) => {
         </div>
 
         <div
-          onClick={() => setOpened(true)}
+          onClick={onOpen}
           className="bg-gray-100 p-2 flex rounded-full text-purple-900 hover:bg-gray-200 cursor-pointer"
         >
           <Plus size={24} />
         </div>
-        {opened && <AddBookPopup onClose={() => setOpened(false)} />}
       </div>
     </header>
   );
