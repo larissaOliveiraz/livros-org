@@ -39,7 +39,7 @@ export const Header = ({ all, byStatus, onOpen }: HeaderProps) => {
           onClick={() => getAll()}
           className={`${
             selection === "ALL" && "bg-purple-900 text-white"
-          } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer`}
+          } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer hover:scale-105 hover:shadow-md transition-all`}
         >
           Todos
         </div>
@@ -47,7 +47,7 @@ export const Header = ({ all, byStatus, onOpen }: HeaderProps) => {
           onClick={() => getByStatus("WANT")}
           className={`${
             selection === "WANT" && "bg-purple-900 text-white"
-          } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer`}
+          } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer hover:scale-105 hover:shadow-md transition-all`}
         >
           Quero Ler
         </div>
@@ -55,7 +55,7 @@ export const Header = ({ all, byStatus, onOpen }: HeaderProps) => {
           onClick={() => getByStatus("READING")}
           className={`${
             selection === "READING" && "bg-purple-900 text-white"
-          } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer`}
+          } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer hover:scale-105 hover:shadow-md transition-all`}
         >
           Lendo
         </div>
@@ -63,14 +63,14 @@ export const Header = ({ all, byStatus, onOpen }: HeaderProps) => {
           onClick={() => getByStatus("READ")}
           className={`${
             selection === "READ" && "bg-purple-900 text-white"
-          } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer`}
+          } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer hover:scale-105 hover:shadow-md transition-all`}
         >
           Já Li
         </div>
 
         <div
           onClick={onOpen}
-          className="bg-gray-100 p-2 flex rounded-full text-purple-900 hover:bg-gray-200 cursor-pointer"
+          className="bg-gray-100 p-2 flex rounded-full text-purple-900 cursor-pointer hover:scale-110 hover:shadow-md transition-all"
         >
           <Plus size={24} />
         </div>

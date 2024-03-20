@@ -1,15 +1,17 @@
 "use client";
 import { AddBookPopup } from "@/components/AddBookPopup";
+import { BookDetailsPopup } from "@/components/BookDetailsPopup";
 import { Header } from "@/components/Header";
 import { axiosApi } from "@/lib/axios";
 import { Book } from "@/types/Book";
 import { Search } from "lucide-react";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 export default function Home() {
   const [books, setBooks] = useState<Book[]>([]);
   const [bookDetails, setBookDetails] = useState<Book>();
-  const [opened, setOpened] = useState(false);
+  const [openAddBookPopup, setOpenAddBookPopup] = useState(false);
+  const [openBookDetailsPopup, setOpenBookDetailsPopup] = useState(false);
 
   async function getAllBooks() {
     const { data } = await axiosApi.get("/books/user/1");
@@ -25,8 +27,8 @@ export default function Home() {
 
   async function getBookDetails(bookId: number) {
     const { data } = await axiosApi.get(`/books/user/1/book/${bookId}`);
+    setOpenBookDetailsPopup(true);
     setBookDetails(data);
-    console.log(data);
   }
 
   useEffect(() => {
@@ -39,11 +41,11 @@ export default function Home() {
         <Header
           all={getAllBooks}
           byStatus={getBooksByStatus}
-          onOpen={() => setOpened(true)}
+          onOpen={() => setOpenAddBookPopup(true)}
         />
         <main className="mt-3">
-          <div className="flex items-center justify-between">
-            <p className="flex-1">
+          <div className="flex items-center justify-between gap-10">
+            <p className="flex">
               {books.length} {books.length > 1 ? "livros" : "livro"}
             </p>
             <div className="flex flex-1 gap-2 bg-gray-100 p-2 rounded-full text-purple-900">
@@ -60,7 +62,7 @@ export default function Home() {
               books.map((book) => (
                 <div
                   onClick={() => getBookDetails(book.id as number)}
-                  className={`flex items-center gap-3 p-3 rounded-lg ${
+                  className={`flex items-center gap-3 p-3 rounded-lg hover:shadow-md cursor-pointer hover:scale-105 transition-all ${
                     book.status === "WANT" && "bg-blue-100"
                   } ${book.status === "READING" && "bg-yellow-100"} ${
                     book.status === "READ" && "bg-green-100"
@@ -71,7 +73,7 @@ export default function Home() {
                       book.status === "READING" && "bg-yellow-500"
                     } ${
                       book.status === "READ" && "bg-green-600"
-                    } w-4 h-4 rounded-full`}
+                    } w-5 h-5 rounded-full`}
                   ></div>
                   <div>
                     <p className="text-lg font-semibold -mb-1">{book.title}</p>
@@ -82,7 +84,15 @@ export default function Home() {
           </div>
         </main>
       </div>
-      {opened && <AddBookPopup onClose={() => setOpened(false)} />}
+      {openAddBookPopup && (
+        <AddBookPopup onClose={() => setOpenAddBookPopup(false)} />
+      )}
+      {openBookDetailsPopup && (
+        <BookDetailsPopup
+          book={bookDetails as Book}
+          onClose={() => setOpenBookDetailsPopup(false)}
+        />
+      )}
     </>
   );
 }
