@@ -2,29 +2,18 @@
 import { X } from "lucide-react";
 import { GenericInput } from "./GenericInput";
 import { useState } from "react";
+import { axiosApi } from "@/lib/axios";
+import { Book } from "@/types/Book";
 
 interface AddBookPopupProps {
   onClose: () => void;
 }
 
-type Book = {
-  title: string;
-  autor: string;
-  genre: string;
-  publicationYear: string;
-  description: string;
-  status: "WANT" | "READING" | "READ";
-  readingYear: string;
-  readingMonth: string;
-  score: string;
-};
-
 export const AddBookPopup = ({ onClose }: AddBookPopupProps) => {
   const [status, setStatus] = useState<"WANT" | "READING" | "READ">("WANT");
-  const [closed, setClosed] = useState(false);
 
   const [title, setTitle] = useState("");
-  const [autor, setAutor] = useState("");
+  const [author, setAuthor] = useState("");
   const [genre, setGenre] = useState("");
   const [publicationYear, setPublicationYear] = useState("");
   const [description, setDescription] = useState("");
@@ -32,9 +21,9 @@ export const AddBookPopup = ({ onClose }: AddBookPopupProps) => {
   const [readingMonth, setReadingMonth] = useState("");
   const [score, setScore] = useState("");
 
-  function addBook({
+  async function addBook({
     title,
-    autor,
+    author,
     genre,
     publicationYear,
     description,
@@ -43,9 +32,9 @@ export const AddBookPopup = ({ onClose }: AddBookPopupProps) => {
     readingYear,
     score,
   }: Book) {
-    console.log({
+    const { data } = await axiosApi.post("/books", {
       title,
-      autor,
+      author,
       genre,
       publicationYear,
       description,
@@ -53,7 +42,12 @@ export const AddBookPopup = ({ onClose }: AddBookPopupProps) => {
       readingMonth,
       readingYear,
       score,
+      user: {
+        id: 2,
+      },
     });
+
+    console.log(data);
 
     onClose();
   }
@@ -77,7 +71,7 @@ export const AddBookPopup = ({ onClose }: AddBookPopupProps) => {
             </label>
             <label>
               Autor*
-              <GenericInput value={autor} setValue={setAutor} />
+              <GenericInput value={author} setValue={setAuthor} />
             </label>
             <label>
               Gênero
@@ -153,7 +147,7 @@ export const AddBookPopup = ({ onClose }: AddBookPopupProps) => {
             onClick={() =>
               addBook({
                 title,
-                autor,
+                author,
                 genre,
                 publicationYear,
                 description,

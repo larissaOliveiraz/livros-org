@@ -1,17 +1,30 @@
 "use client";
 import { AddBookPopup } from "@/components/AddBookPopup";
+import { axiosApi } from "@/lib/axios";
+import { Book } from "@/types/Book";
 import { Library, Plus, Search } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [selection, setSelection] = useState<
     "ALL" | "WANT" | "READING" | "READ"
   >("ALL");
   const [opened, setOpened] = useState(false);
+  const [books, setBooks] = useState<Book[]>([]);
+
+  async function getAllBooks() {
+    const { data } = await axiosApi.get("/books/1");
+    setBooks(data);
+    setSelection("ALL");
+  }
+
+  useEffect(() => {
+    getAllBooks();
+  }, []);
 
   return (
     <>
-      <div className="p-4 w-[70%] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-md">
+      <div className="p-4 w-[60%] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-md">
         <header className="flex justify-between gap-5">
           {/* LOGO */}
           <div className="flex text-purple-900">
@@ -22,7 +35,7 @@ export default function Home() {
           {/* MENU */}
           <div className="flex gap-2">
             <div
-              onClick={() => setSelection("ALL")}
+              onClick={getAllBooks}
               className={`${
                 selection === "ALL" && "bg-purple-900 text-white"
               } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer`}
@@ -65,7 +78,7 @@ export default function Home() {
             </div>
           </div>
         </header>
-        <main>livros</main>
+        <main>{books && books.map((book) => <p>{book.title}</p>)}</main>
       </div>
       {opened && <AddBookPopup onClose={() => setOpened(false)} />}
     </>

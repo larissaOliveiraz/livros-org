@@ -19,7 +19,7 @@ public class Book {
     private String genre;
     private String description;
     private String publicationYear;
-    private Status status;
+    private String status;
     private String readingMonth;
     private String readingYear;
     private String score;
