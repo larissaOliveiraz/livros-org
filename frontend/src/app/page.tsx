@@ -18,13 +18,19 @@ export default function Home() {
     setSelection("ALL");
   }
 
+  async function getBooksByStatus(status: string) {
+    const { data } = await axiosApi.get(`/books/1/${status.toLowerCase()}`);
+    setBooks(data);
+    setSelection(status.toUpperCase() as "ALL" | "WANT" | "READING" | "READ");
+  }
+
   useEffect(() => {
     getAllBooks();
   }, []);
 
   return (
     <>
-      <div className="p-4 w-[60%] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-md">
+      <div className="p-4 w-[60%] h-[60%] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-md">
         <header className="flex justify-between gap-5">
           {/* LOGO */}
           <div className="flex text-purple-900">
@@ -43,7 +49,7 @@ export default function Home() {
               Todos
             </div>
             <div
-              onClick={() => setSelection("WANT")}
+              onClick={() => getBooksByStatus("WANT")}
               className={`${
                 selection === "WANT" && "bg-purple-900 text-white"
               } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer`}
@@ -51,7 +57,7 @@ export default function Home() {
               Quero Ler
             </div>
             <div
-              onClick={() => setSelection("READING")}
+              onClick={() => getBooksByStatus("READING")}
               className={`${
                 selection === "READING" && "bg-purple-900 text-white"
               } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer`}
@@ -59,7 +65,7 @@ export default function Home() {
               Lendo
             </div>
             <div
-              onClick={() => setSelection("READ")}
+              onClick={() => getBooksByStatus("READ")}
               className={`${
                 selection === "READ" && "bg-purple-900 text-white"
               } bg-gray-100 p-2 px-4 rounded-full text-purple-900 cursor-pointer`}
