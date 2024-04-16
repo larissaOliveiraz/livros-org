@@ -25,10 +25,15 @@ export default function Home() {
     setBooks(data);
   }
 
-  async function getBookDetails(bookId: number) {
+  async function getBookDetails(bookId: string) {
     const { data } = await axiosApi.get(`/books/user/1/book/${bookId}`);
     setOpenBookDetailsPopup(true);
     setBookDetails(data);
+  }
+
+  async function addBook() {
+    await getAllBooks();
+    setOpenAddBookPopup(false);
   }
 
   useEffect(() => {
@@ -61,7 +66,7 @@ export default function Home() {
             {books &&
               books.map((book) => (
                 <div
-                  onClick={() => getBookDetails(book.id as number)}
+                  onClick={() => getBookDetails(book.id as string)}
                   className={`flex items-center gap-3 p-3 rounded-lg hover:shadow-md cursor-pointer hover:scale-105 transition-all ${
                     book.status === "WANT" && "bg-blue-100"
                   } ${book.status === "READING" && "bg-yellow-100"} ${
@@ -84,9 +89,7 @@ export default function Home() {
           </div>
         </main>
       </div>
-      {openAddBookPopup && (
-        <AddBookPopup onClose={() => setOpenAddBookPopup(false)} />
-      )}
+      {openAddBookPopup && <AddBookPopup onClose={addBook} />}
       {openBookDetailsPopup && (
         <BookDetailsPopup
           book={bookDetails as Book}
