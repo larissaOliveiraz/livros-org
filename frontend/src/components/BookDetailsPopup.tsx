@@ -1,5 +1,5 @@
 import { Book } from "@/types/Book";
-import { X } from "lucide-react";
+import { Pencil, Trash2, X } from "lucide-react";
 
 interface BookDetailsPopupProps {
   book: Book;
@@ -73,6 +73,15 @@ export const BookDetailsPopup = ({ book, onClose }: BookDetailsPopupProps) => {
               </div>
             </>
           )}
+        </div>
+
+        <div className="w-full flex justify-end gap-3">
+          <div className="bg-blue-800 rounded-full overflow-hidden p-2 cursor-pointer hover:scale-110 transition-all">
+            <Pencil className="" color="white" />
+          </div>
+          <div className="bg-red-600 rounded-full overflow-hidden p-2 cursor-pointer hover:scale-105 transition-all">
+            <Trash2 className="" color="white" />
+          </div>
         </div>
       </div>
     </div>
