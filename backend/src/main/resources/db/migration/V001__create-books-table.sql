@@ -10,17 +10,17 @@ create table users
 
 create table books
 (
-    id              serial unique not null,
+    id               serial unique not null,
     user_id          bigint        not null,
-    title           varchar(100)  not null,
-    author          varchar(100)  not null,
-    genre           varchar(100)  not null,
+    title            varchar(100)  not null,
+    author           varchar(100)  not null,
+    genre            varchar(100)  not null,
     publication_year varchar(4)    not null,
-    description     varchar(255),
-    status          varchar(10)   not null,
+    description      text,
+    status           varchar(10)   not null,
     reading_month    varchar(50),
     reading_year     varchar(10),
-    score           varchar(10),
+    score            varchar(10),
 
     primary key (id)
 );
