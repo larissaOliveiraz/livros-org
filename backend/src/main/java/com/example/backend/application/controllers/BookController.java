@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static java.lang.Long.parseLong;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/books")
@@ -58,8 +60,8 @@ public class BookController {
 
     @DeleteMapping("{bookId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long bookId) {
-        repository.deleteById(bookId);
+    public void delete(@PathVariable String bookId) {
+        repository.deleteById(parseLong(bookId));
     }
 
 }
