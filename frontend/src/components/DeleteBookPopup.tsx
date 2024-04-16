@@ -1,6 +1,8 @@
+import { BooksContext } from "@/contexts/BooksContext";
 import { axiosApi } from "@/lib/axios";
 import { Book } from "@/types/Book";
 import { X } from "lucide-react";
+import { useContext } from "react";
 
 interface DeleteBookPopupProps {
   book: Book;
@@ -13,10 +15,12 @@ export const DeleteBookPopup = ({
   onClose,
   onCloseAll,
 }: DeleteBookPopupProps) => {
+  const { getAllBooks } = useContext(BooksContext);
+
   async function deleteBook(bookId: string) {
     await axiosApi.delete(`/books/${bookId}`);
+    getAllBooks();
     onCloseAll();
-    4;
   }
 
   return (

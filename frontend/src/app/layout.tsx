@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import { BooksContextProvider } from "@/contexts/BooksContext";
 
 const font = Poppins({ subsets: ["latin"], weight: ["400", "500", "600"] });
 
@@ -16,7 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${font.className} bg-gray-50`}>{children}</body>
+      <body className={`${font.className} bg-gray-50`}>
+        <BooksContextProvider>{children}</BooksContextProvider>
+      </body>
     </html>
   );
 }

@@ -2,27 +2,24 @@
 import { AddBookPopup } from "@/components/AddBookPopup";
 import { BookDetailsPopup } from "@/components/BookDetailsPopup";
 import { Header } from "@/components/Header";
+import { BooksContext } from "@/contexts/BooksContext";
 import { axiosApi } from "@/lib/axios";
 import { Book } from "@/types/Book";
 import { Search } from "lucide-react";
-import { use, useEffect, useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
 
 export default function Home() {
-  const [books, setBooks] = useState<Book[]>([]);
+  const { books, getAllBooks, setAllBooks } = useContext(BooksContext);
+
   const [bookDetails, setBookDetails] = useState<Book>();
   const [openAddBookPopup, setOpenAddBookPopup] = useState(false);
   const [openBookDetailsPopup, setOpenBookDetailsPopup] = useState(false);
-
-  async function getAllBooks() {
-    const { data } = await axiosApi.get("/books/user/1");
-    setBooks(data);
-  }
 
   async function getBooksByStatus(status: string) {
     const { data } = await axiosApi.get(
       `/books/user/1/${status.toLowerCase()}`
     );
-    setBooks(data);
+    setAllBooks(data);
   }
 
   async function getBookDetails(bookId: string) {
@@ -31,8 +28,8 @@ export default function Home() {
     setBookDetails(data);
   }
 
-  async function addBook() {
-    await getAllBooks();
+  function addBook() {
+    getAllBooks();
     setOpenAddBookPopup(false);
   }
 
