@@ -1,6 +1,7 @@
 "use client";
 import { AddBookPopup } from "@/components/AddBookPopup";
 import { BookDetailsPopup } from "@/components/BookDetailsPopup";
+import { GenericInput } from "@/components/GenericInput";
 import { Header } from "@/components/Header";
 import { BooksContext } from "@/contexts/BooksContext";
 import { axiosApi } from "@/lib/axios";
@@ -11,6 +12,8 @@ import { useContext, useEffect, useState } from "react";
 export default function Home() {
   const { books, getAllBooks, setAllBooks } = useContext(BooksContext);
 
+  const [search, setSearch] = useState("");
+  const [booksFiltered, setBooksFiltered] = useState<Book[]>([]);
   const [bookDetails, setBookDetails] = useState<Book>();
   const [openAddBookPopup, setOpenAddBookPopup] = useState(false);
   const [openBookDetailsPopup, setOpenBookDetailsPopup] = useState(false);
@@ -33,9 +36,26 @@ export default function Home() {
     setOpenAddBookPopup(false);
   }
 
+  function handleSearchBook(input: string) {
+    let filteredBooks: Book[] = [];
+    for (let book of books) {
+      if (
+        book.title.toLowerCase().indexOf(input.toLowerCase()) > -1 ||
+        book.author.toLowerCase().indexOf(input.toLowerCase()) > -1
+      ) {
+        filteredBooks.push(book);
+      }
+    }
+    setBooksFiltered(filteredBooks);
+  }
+
   useEffect(() => {
     getAllBooks();
   }, []);
+
+  useEffect(() => {
+    handleSearchBook(search);
+  }, [search]);
 
   return (
     <>
@@ -50,17 +70,42 @@ export default function Home() {
             <p className="flex">
               {books.length} {books.length > 1 ? "livros" : "livro"}
             </p>
-            <div className="flex flex-1 gap-2 bg-gray-100 p-2 rounded-full text-purple-900">
-              <input
-                type="text"
-                className="bg-gray-100 outline-none px-2 w-full"
+            <div className="flex flex-1 items-center gap-2 text-purple-900">
+              <GenericInput
+                value={search}
+                setValue={setSearch}
+                placeholder="Busque livros pelo título, autor ou gênero..."
               />
-              <Search size={24} className="cursor-pointer" />
+
+              <Search size={24} className="cursor-pointer -ml-11" />
             </div>
           </div>
 
           <div className="grid grid-cols-3 gap-3 mt-3">
-            {books &&
+            {search !== "" &&
+              booksFiltered.map((book) => (
+                <div
+                  onClick={() => getBookDetails(book.id as string)}
+                  className={`flex items-center gap-3 p-3 rounded-lg hover:shadow-md cursor-pointer hover:scale-105 transition-all ${
+                    book.status === "WANT" && "bg-blue-100"
+                  } ${book.status === "READING" && "bg-yellow-100"} ${
+                    book.status === "READ" && "bg-green-100"
+                  } `}
+                >
+                  <div
+                    className={`${book.status === "WANT" && "bg-blue-700"} ${
+                      book.status === "READING" && "bg-yellow-500"
+                    } ${
+                      book.status === "READ" && "bg-green-600"
+                    } w-5 h-5 rounded-full`}
+                  ></div>
+                  <div>
+                    <p className="text-lg font-semibold -mb-1">{book.title}</p>
+                    <p>{book.author}</p>
+                  </div>
+                </div>
+              ))}
+            {search === "" &&
               books.map((book) => (
                 <div
                   onClick={() => getBookDetails(book.id as string)}
