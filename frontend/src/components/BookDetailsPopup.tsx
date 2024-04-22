@@ -27,7 +27,9 @@ export const BookDetailsPopup = ({ book, onClose }: BookDetailsPopupProps) => {
       <div className="bg-black/30 fixed top-0 left-0 right-0 bottom-0">
         <div className="bg-white text-purple-900 w-2/5 fixed p-4 rounded-lg top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
           <div className="flex items-center justify-between">
-            <p className="font-semibold text-xl">{book.title}...</p>
+            <p className="font-semibold text-2xl">
+              <strong>{book.title}</strong>
+            </p>
             <X onClick={onClose} className="hover:scale-110 cursor-pointer" />
           </div>
 
@@ -66,8 +68,11 @@ export const BookDetailsPopup = ({ book, onClose }: BookDetailsPopupProps) => {
               publicação:
               <strong>{book.publicationYear}</strong>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-purple-900 rounded-full" /> Descrição:
+            <div className="flex items-start gap-2">
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-purple-900 rounded-full"></div>
+                <p className="ml-2">Descrição:</p>
+              </div>
               <strong>{book.description}</strong>
             </div>
             {book.status === "READ" && (
@@ -91,7 +96,7 @@ export const BookDetailsPopup = ({ book, onClose }: BookDetailsPopupProps) => {
             )}
           </div>
 
-          <div className="w-full flex justify-end gap-3">
+          <div className="w-full flex justify-start gap-3 mt-5">
             <div className="bg-blue-800 rounded-full overflow-hidden p-2 cursor-pointer hover:scale-110 transition-all">
               <Pencil className="" color="white" />
             </div>

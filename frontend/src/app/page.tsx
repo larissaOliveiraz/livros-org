@@ -6,7 +6,7 @@ import { BooksContext } from "@/contexts/BooksContext";
 import { axiosApi } from "@/lib/axios";
 import { Book } from "@/types/Book";
 import { Search } from "lucide-react";
-import { use, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 export default function Home() {
   const { books, getAllBooks, setAllBooks } = useContext(BooksContext);
