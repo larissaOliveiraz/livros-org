@@ -41,7 +41,9 @@ export default function Home() {
     for (let book of books) {
       if (
         book.title.toLowerCase().indexOf(input.toLowerCase()) > -1 ||
-        book.author.toLowerCase().indexOf(input.toLowerCase()) > -1
+        book.author.toLowerCase().indexOf(input.toLowerCase()) > -1 ||
+        book.genre.toLowerCase().indexOf(input.toLowerCase()) > -1 ||
+        book.readingYear.toLowerCase().indexOf(input.toLowerCase()) > -1
       ) {
         filteredBooks.push(book);
       }
@@ -74,7 +76,7 @@ export default function Home() {
               <GenericInput
                 value={search}
                 setValue={setSearch}
-                placeholder="Busque livros pelo título, autor ou gênero..."
+                placeholder="Busque livros pelo título, autor, gênero ou ano de leitura..."
               />
 
               <Search size={24} className="cursor-pointer -ml-11" />
