@@ -2,7 +2,8 @@
 import { Book } from "@/types/Book";
 import { Pencil, Trash2, X } from "lucide-react";
 import { DeleteBookPopup } from "./DeleteBookPopup";
-import { useState } from "react";
+import { use, useState } from "react";
+import { EditBookPopup } from "./EditBookPopup";
 
 interface BookDetailsPopupProps {
   book: Book;
@@ -11,14 +12,15 @@ interface BookDetailsPopupProps {
 
 export const BookDetailsPopup = ({ book, onClose }: BookDetailsPopupProps) => {
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
-
-  function deleteBookRedirect() {
-    setOpenDeletePopup(true);
-    console.log(book.id);
-  }
+  const [openEditPopup, setOpenEditPopup] = useState(false);
 
   function deleteBookCloseAll() {
     setOpenDeletePopup(false);
+    onClose();
+  }
+
+  function editBookCloseAll() {
+    setOpenEditPopup(false);
     onClose();
   }
 
@@ -97,11 +99,14 @@ export const BookDetailsPopup = ({ book, onClose }: BookDetailsPopupProps) => {
           </div>
 
           <div className="w-full flex justify-start gap-3 mt-5">
-            <div className="bg-blue-800 rounded-full overflow-hidden p-2 cursor-pointer hover:scale-110 transition-all">
+            <div
+              onClick={() => setOpenEditPopup(true)}
+              className="bg-blue-800 rounded-full overflow-hidden p-2 cursor-pointer hover:scale-110 transition-all"
+            >
               <Pencil className="" color="white" />
             </div>
             <div
-              onClick={deleteBookRedirect}
+              onClick={() => setOpenDeletePopup(true)}
               className="bg-red-600 rounded-full overflow-hidden p-2 cursor-pointer hover:scale-105 transition-all"
             >
               <Trash2 className="" color="white" />
@@ -109,6 +114,13 @@ export const BookDetailsPopup = ({ book, onClose }: BookDetailsPopupProps) => {
           </div>
         </div>
       </div>
+      {openEditPopup && (
+        <EditBookPopup
+          book={book}
+          onClose={() => setOpenEditPopup(false)}
+          onCloseAll={editBookCloseAll}
+        />
+      )}
       {openDeletePopup && (
         <DeleteBookPopup
           book={book}
