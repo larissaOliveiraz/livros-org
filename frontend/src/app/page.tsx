@@ -83,6 +83,10 @@ export default function Home() {
             </div>
           </div>
 
+          <div className="bg-gray-200 w-full h-4 mt-3 rounded-full overflow-hidden">
+            <div className="bg-purple-800 w-[30%] h-4 rounded-full"></div>
+          </div>
+
           <div className="grid grid-cols-3 gap-3 mt-3">
             {search !== "" &&
               booksFiltered.map((book) => (
