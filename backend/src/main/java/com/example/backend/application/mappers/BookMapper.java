@@ -28,4 +28,8 @@ public class BookMapper {
         return modelMapper.map(bookRequest, Book.class);
     }
 
+    public void copyToDomain(BookRequest bookRequest, Book book) {
+        modelMapper.map(bookRequest, book);
+    }
+
 }

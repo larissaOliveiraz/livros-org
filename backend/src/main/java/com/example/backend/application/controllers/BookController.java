@@ -26,11 +26,7 @@ public class BookController {
 
     @GetMapping("/user/{userId}/book/{bookId}")
     public BookDTO getBookById(@PathVariable Long userId, @PathVariable Long bookId) {
-        List<Book> books = repository.findAllByUserId(userId);
-        Book selectedBook = books.stream()
-                .filter(book -> Objects.equals(book.getId(), bookId))
-                .findFirst()
-                .orElse(null);
+        Book selectedBook = findBookById(userId, bookId);
         return selectedBook != null ? mapper.toDTO(selectedBook) : null;
     }
 
@@ -58,10 +54,29 @@ public class BookController {
         repository.save(book);
     }
 
+    @PutMapping("/user/{userId}/book/{bookId}")
+    public void update(@RequestBody @Valid BookRequest bookRequest,
+                       @PathVariable Long userId,
+                       @PathVariable Long bookId) {
+        var selectedBook = findBookById(userId, bookId);
+        if (selectedBook != null) {
+            mapper.copyToDomain(bookRequest, selectedBook);
+            repository.save(selectedBook);
+        }
+    }
+
     @DeleteMapping("{bookId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String bookId) {
         repository.deleteById(parseLong(bookId));
     }
 
+    private Book findBookById(Long userId, Long bookId) {
+        List<Book> books = repository.findAllByUserId(userId);
+
+        return books.stream()
+                .filter(book -> Objects.equals(book.getId(), bookId))
+                .findFirst()
+                .orElse(null);
+    }
 }
