@@ -24,6 +24,11 @@ public class UserController {
         return mapper.toDTO(user);
     }
 
+    @GetMapping("/username/{username}")
+    public User getByUsername(@PathVariable String username) {
+        return repository.findByUsername(username);
+    }
+
     @PostMapping
     public void create(@RequestBody UserRequest userRequest) {
         User user = mapper.toDomain(userRequest);
