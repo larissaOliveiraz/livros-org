@@ -5,6 +5,7 @@ from users;
 
 insert into users (id, name, username, password)
 values (1, 'Larissa', 'lari97', '123');
+alter sequence users_id_seq restart with 2;
 
 insert into books (id, user_id, title, author, genre, publication_year, description, status, reading_month, reading_year,
                    score)

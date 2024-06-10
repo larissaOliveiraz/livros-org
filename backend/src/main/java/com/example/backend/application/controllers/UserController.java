@@ -1,14 +1,14 @@
 package com.example.backend.application.controllers;
 
+import com.example.backend.application.dto.UserDTO;
 import com.example.backend.application.dto.requests.UserRequest;
 import com.example.backend.application.mappers.UserMapper;
 import com.example.backend.domain.model.User;
 import com.example.backend.domain.repositories.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -17,6 +17,12 @@ public class UserController {
 
     private final UserRepository repository;
     private UserMapper mapper;
+
+    @GetMapping("/{id}")
+    public UserDTO getById(@PathVariable Long id) {
+        User user = repository.findById(id).orElseThrow();
+        return mapper.toDTO(user);
+    }
 
     @PostMapping
     public void create(@RequestBody UserRequest userRequest) {
