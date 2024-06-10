@@ -20,6 +20,25 @@ export default function Sign() {
     setActiveButton("LOGIN");
   }
 
+  async function handleLogin(username: string, password: string) {
+    const { data } = await axiosApi.get(`/user/username/${username}`);
+    if (!data.id) {
+      console.log("Usuário não existe");
+      return;
+    }
+    const user = data;
+
+    if (user.password !== password) {
+      console.log("Senha incorreta");
+      return;
+    }
+
+    localStorage.setItem("userId", `${user.id}`);
+    localStorage.setItem("username", `${user.username}`);
+
+    router.push("/");
+  }
+
   return (
     <div className="p-4 w-[40%]  fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-md">
       <header className="flex w-full">
@@ -72,7 +91,10 @@ export default function Sign() {
             Senha:
             <GenericInput value={password} setValue={setPassword} />
           </label>
-          <button className="bg-purple-900 text-white p-2 rounded-lg mt-5 hover:brightness-75">
+          <button
+            onClick={() => handleLogin(username, password)}
+            className="bg-purple-900 text-white p-2 rounded-lg mt-5 hover:brightness-75"
+          >
             Login
           </button>
         </div>
