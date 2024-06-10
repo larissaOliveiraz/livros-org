@@ -32,6 +32,7 @@ export const AddBookPopup = ({ onClose }: AddBookPopupProps) => {
     readingYear,
     score,
   }: Book) {
+    const userId = localStorage.getItem("userId");
     const { data } = await axiosApi.post("/books", {
       title,
       author,
@@ -43,7 +44,7 @@ export const AddBookPopup = ({ onClose }: AddBookPopupProps) => {
       readingYear,
       score,
       user: {
-        id: 1,
+        id: userId,
       },
     });
 

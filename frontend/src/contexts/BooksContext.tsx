@@ -19,7 +19,8 @@ export const BooksContextProvider = ({ children }: ProviderProps) => {
   const [books, setBooks] = useState<Book[]>([]);
 
   async function getAllBooks() {
-    const { data } = await axiosApi.get(`/books/user/1`);
+    const userId = localStorage.getItem("userId");
+    const { data } = await axiosApi.get(`/books/user/${userId}`);
     setBooks(data);
   }
 

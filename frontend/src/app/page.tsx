@@ -7,9 +7,11 @@ import { BooksContext } from "@/contexts/BooksContext";
 import { axiosApi } from "@/lib/axios";
 import { Book } from "@/types/Book";
 import { Search } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 export default function Home() {
+  const router = useRouter();
   const { books, getAllBooks, setAllBooks } = useContext(BooksContext);
 
   const [search, setSearch] = useState("");
@@ -18,15 +20,17 @@ export default function Home() {
   const [openAddBookPopup, setOpenAddBookPopup] = useState(false);
   const [openBookDetailsPopup, setOpenBookDetailsPopup] = useState(false);
 
+  const [userId, setUserId] = useState<null | string>(null);
+
   async function getBooksByStatus(status: string) {
     const { data } = await axiosApi.get(
-      `/books/user/1/${status.toLowerCase()}`
+      `/books/user/${userId}/${status.toLowerCase()}`
     );
     setAllBooks(data);
   }
 
   async function getBookDetails(bookId: string) {
-    const { data } = await axiosApi.get(`/books/user/1/book/${bookId}`);
+    const { data } = await axiosApi.get(`/books/user/${userId}/book/${bookId}`);
     setOpenBookDetailsPopup(true);
     setBookDetails(data);
   }
@@ -52,6 +56,11 @@ export default function Home() {
   }
 
   useEffect(() => {
+    if (localStorage.getItem("userId") === null) {
+      router.push("/sign");
+    } else {
+      setUserId(localStorage.getItem("userId"));
+    }
     getAllBooks();
   }, []);
 
