@@ -72,7 +72,11 @@ export default function Sign() {
           </label>
           <label>
             Senha:
-            <GenericInput value={password} setValue={setPassword} />
+            <GenericInput
+              value={password}
+              setValue={setPassword}
+              type="password"
+            />
           </label>
           <button
             onClick={() => handleCreateUser({ name, username, password })}
@@ -89,7 +93,11 @@ export default function Sign() {
           </label>
           <label>
             Senha:
-            <GenericInput value={password} setValue={setPassword} />
+            <GenericInput
+              value={password}
+              setValue={setPassword}
+              type="password"
+            />
           </label>
           <button
             onClick={() => handleLogin(username, password)}

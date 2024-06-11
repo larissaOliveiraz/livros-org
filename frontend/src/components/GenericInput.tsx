@@ -5,12 +5,14 @@ interface GenericInputProps {
   value: string;
   setValue: (value: string) => void;
   placeholder?: string;
+  type?: string;
 }
 
 export const GenericInput = ({
   value,
   setValue,
   placeholder,
+  type = "text",
 }: GenericInputProps) => {
   const [focused, setFocused] = useState(false);
 
@@ -21,7 +23,7 @@ export const GenericInput = ({
       }`}
     >
       <input
-        type="text"
+        type={type}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onFocus={() => setFocused(true)}
