@@ -1,8 +1,7 @@
 "use client";
-import { Library, Plus, Search } from "lucide-react";
+import { Library, LogOut, Plus, Search } from "lucide-react";
 import { useState } from "react";
-import { AddBookPopup } from "./AddBookPopup";
-import { Book } from "@/types/Book";
+import { useRouter } from "next/navigation";
 
 interface HeaderProps {
   all: () => void;
@@ -11,6 +10,7 @@ interface HeaderProps {
 }
 
 export const Header = ({ all, byStatus, onOpen }: HeaderProps) => {
+  const router = useRouter();
   const [selection, setSelection] = useState<
     "ALL" | "WANT" | "READING" | "READ"
   >("ALL");
@@ -25,12 +25,27 @@ export const Header = ({ all, byStatus, onOpen }: HeaderProps) => {
     setSelection(status as "ALL" | "WANT" | "READING" | "READ");
   }
 
+  function handleSignOut() {
+    localStorage.removeItem("userId");
+    localStorage.removeItem("username");
+
+    router.push("/sign");
+  }
+
   return (
     <header className="flex justify-between gap-5">
       {/* LOGO */}
-      <div className="flex text-purple-900">
-        <Library size={28} />
-        <p className="pt-1 font-semibold">LivrosOrg</p>
+      <div className="flex items-center gap-3">
+        <div className="flex text-purple-900">
+          <Library size={28} />
+          <p className="pt-1 font-semibold">LivrosOrg</p>
+        </div>
+        <button
+          onClick={handleSignOut}
+          className="bg-purple-900 text-white p-2 hover:scale-110 transition-all rounded-full flex gap-1 items-center"
+        >
+          <LogOut size={20} />
+        </button>
       </div>
 
       {/* MENU */}

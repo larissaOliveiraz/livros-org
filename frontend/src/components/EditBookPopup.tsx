@@ -42,7 +42,8 @@ export const EditBookPopup = ({
     readingYear,
     score,
   }: Book) {
-    await axiosApi.put(`/books/user/1/book/${book.id}`, {
+    const userId = localStorage.getItem("userId");
+    await axiosApi.put(`/books/user/${userId}/book/${book.id}`, {
       title,
       author,
       genre,
@@ -53,7 +54,7 @@ export const EditBookPopup = ({
       readingYear,
       score,
       user: {
-        id: 1,
+        id: userId,
       },
     });
 
